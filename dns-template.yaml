@@ -1,0 +1,33 @@
+Parameters:
+  HostedZone:
+    Type: String
+    Default: Z0394676AAXOOA2NV0I3
+  DomainName:
+    Type: String
+    Default: invisi.link
+
+Resources:
+  books:
+    Type: AWS::Route53::RecordSet
+    Properties: 
+      Type: CNAME
+      HostedZoneId:
+        Ref: HostedZone
+      TTL: '60'
+      Name:
+        Fn::Sub: books.${DomainName}
+      ResourceRecords:
+        - alexanderbird.software/blog/reading-list.html
+
+Resources:
+  blog:
+    Type: AWS::Route53::RecordSet
+    Properties: 
+      Type: CNAME
+      HostedZoneId:
+        Ref: HostedZone
+      TTL: '60'
+      Name:
+        Fn::Sub: blog.${DomainName}
+      ResourceRecords:
+        - alexanderbird.software/blog
