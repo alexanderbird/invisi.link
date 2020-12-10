@@ -33,9 +33,9 @@ Resources:
   booksRoute53:
     Type: AWS::Route53::RecordSet
     Properties: 
-      Type: A
       HostedZoneId: !Ref HostedZone
+      Type: CNAME
+      TTL: 30
       Name: !Sub books.${DomainName}
-      AliasTarget:
-        HostedZoneId: !Ref HostedZone
-        DNSName: !GetAtt booksS3Redirect.DomainName
+      ResourceRecords: 
+        - !GetAtt booksS3Redirect.DomainName
