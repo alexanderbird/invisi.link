@@ -7,27 +7,35 @@ Parameters:
     Default: invisi.link
 
 Resources:
-  books:
+  booksS3Redirect:
+    Type: "AWS::S3::Bucket"
+    Properties: 
+      BucketName: !Sub books.${DomainName}
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        RedirectAllRequestsTo:
+          HostName: alexanderbird.software/blog/reading-list.html
+          Protocol: https
+  booksS3BucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties: 
+      Bucket: !Ref booksS3Redirect
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action:
+              - s3:GetObject
+            Resource: !Sub "arn:aws:s3:::books.${DomainName}/*"
+  booksRoute53:
     Type: AWS::Route53::RecordSet
     Properties: 
-      Type: CNAME
-      HostedZoneId:
-        Ref: HostedZone
-      TTL: '60'
-      Name:
-        Fn::Sub: books.${DomainName}
-      ResourceRecords:
-        - alexanderbird.software/blog/reading-list.html
-
-Resources:
-  blog:
-    Type: AWS::Route53::RecordSet
-    Properties: 
-      Type: CNAME
-      HostedZoneId:
-        Ref: HostedZone
-      TTL: '60'
-      Name:
-        Fn::Sub: blog.${DomainName}
-      ResourceRecords:
-        - alexanderbird.software/blog
+      Type: A
+      HostedZoneId: !Ref HostedZone
+      Name: !Sub books.${DomainName}
+      AliasTarget:
+        HostedZoneId: !Ref HostedZone
+        DNSName: !GetAtt booksS3Redirect.DomainName
