@@ -1,2 +1,2 @@
 #!/bin/bash
-aws cloudformation create-stack --stack-name InvisiLinkDNSEntries --template-body file://./dns-template.yaml
+aws cloudformation create-stack --stack-name InvisiLinkDNSEntries --template-body file://./build/cloudformation.yaml

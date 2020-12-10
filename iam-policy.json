@@ -2,22 +2,37 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "UpdateHostedZone",
+            "Sid": "ScopedActions",
             "Effect": "Allow",
             "Action": [
+                "s3:*",
                 "route53:GetHostedZone",
                 "route53:ChangeResourceRecordSets",
                 "route53:ListResourceRecordSets"
             ],
-            "Resource": "arn:aws:route53:::hostedzone/Z0394676AAXOOA2NV0I3"
+            "Resource": [
+                "arn:aws:s3:::invisi.link",
+                "arn:aws:s3:::invisi.link/*",
+                "arn:aws:s3:::*.invisi.link",
+                "arn:aws:s3:::*.invisi.link/*",
+                "arn:aws:route53:::hostedzone/Z0394676AAXOOA2NV0I3"
+            ]
         },
         {
-            "Sid": "GlobalPermissions",
+            "Sid": "UnscopedActions",
             "Effect": "Allow",
             "Action": [
+                "s3:ListStorageLensConfigurations",
+                "s3:GetAccessPoint",
+                "s3:PutAccountPublicAccessBlock",
+                "s3:GetAccountPublicAccessBlock",
                 "route53:GetChange",
+                "s3:ListAllMyBuckets",
+                "s3:ListAccessPoints",
                 "route53:ListHostedZones",
-                "s3:CreateBucket"
+                "s3:ListJobs",
+                "s3:PutStorageLensConfiguration",
+                "s3:CreateJob"
             ],
             "Resource": "*"
         }
