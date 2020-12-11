@@ -13,6 +13,9 @@ could build a URL shortener without application layer code.
 
 And.... no, I couldn't. See "How does it work" below
 
+As summarized in [this Stack Overflow answer](https://stackoverflow.com/a/9444094/3012550)
+
+> No, what you ask is not possible. DNS is name resolution system and knows nothing about HTTP.
 
 ### This is probably not a good idea
 
