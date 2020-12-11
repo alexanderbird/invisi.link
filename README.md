@@ -42,7 +42,10 @@ Add an entry to [`./redirects`](./redirects) and then re-publish.
     ./describe_stack_events.sh
 
 ### TODO
- - publish as a GitHub action
+ - Add GitHub action to update CFN stack on push
+ - I think CFN supports nested stacks... but one way or another, it would be
+   nice to replace the `bash` house of cards build scripts with something more
+   sensible and idiomatic. 
 
 ## How does it work
 
