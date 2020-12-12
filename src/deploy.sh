@@ -8,12 +8,14 @@ source $DIR/../.env
 set -e
 set -x
 
+aws sts get-caller-identity
+
 templates_bucket=invisi.link.internal.templates
 templates_bucket_s3="s3://$templates_bucket"
 
 if [ "$1" == "--clean" ]; then
-  aws s3 rb $templates_bucket_s3 --force | :
-  aws s3api create-bucket --bucket $templates_bucket --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
+  aws s3 rb $templates_bucket_s3 --force || :
+  aws s3api create-bucket --bucket $templates_bucket --region ca-central-1 --create-bucket-configuration LocationConstraint=ca-central-1
 fi
 
 rm -rf $DIR/../tmp
@@ -31,7 +33,6 @@ if [ "$1" == "--clean" ]; then
   aws cloudformation create-stack --stack-name InvisiLinkAliases --template-body file://$template_file
   aws cloudformation wait stack-create-complete --stack-name InvisiLinkAliases
 else 
-  aws cloudformation update-stack --stack-name InvisiLinkAliases --template-body file://$template_file \
-    && aws cloudformation wait stack-update-complete --stack-name InvisiLinkAliases
+  aws cloudformation update-stack --stack-name InvisiLinkAliases --template-body file://$template_file
 fi
 

@@ -34,8 +34,11 @@ Add an entry to [`./redirects`](./redirects) and then re-publish.
 
 ## Publishing
 
-    src/build.sh
+    src/deploy.sh
 
+or if it's the first time deploying or you want to blow everything away first:
+
+    src/deploy.sh --clean
 
 ### TODO
  - Add GitHub action to update CFN stack on push
