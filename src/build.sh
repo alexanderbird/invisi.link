@@ -2,6 +2,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+touch $DIR/../.env
+source $DIR/../.env
+
 set -e
 set -x
 
