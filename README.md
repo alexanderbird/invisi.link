@@ -34,12 +34,8 @@ Add an entry to [`./redirects`](./redirects) and then re-publish.
 
 ## Publishing
 
-    ./build.sh > build/cloudformation.yaml
-    ./update-stack.sh
+    src/build.sh
 
-### Monitor progress with
-
-    ./describe_stack_events.sh
 
 ### TODO
  - Add GitHub action to update CFN stack on push

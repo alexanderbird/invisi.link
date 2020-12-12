@@ -1,0 +1,15 @@
+{
+  "HostedZone": {
+    "Type": "String",
+    "Default": "Z0394676AAXOOA2NV0I3"
+  },
+  "DomainName": {
+    "Type": "String",
+    "Default": "invisi.link"
+  },
+  "Region": {
+    "Type": "String",
+    "Default": "ca-central-1"
+  }
+}
+

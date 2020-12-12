@@ -1,32 +1,36 @@
 Parameters:
   HostedZone:
     Type: String
-    Default: Z0394676AAXOOA2NV0I3
-  DomainName:
+  Region:
     Type: String
-    Default: invisi.link
+  AliasToRoute:
+    Type: String
+  AliasToProtocol:
+    Type: String
+  AliasFrom:
+    Type: String
 
 Mappings:
   # From https://github.com/PacktPublishing/AWS-Administration-Cookbook/blob/master/Chapter03/03-hosting-a-static-website.yaml
   RegionMap:
-   ca-central-1:
+    ca-central-1:
       S3HostedZoneID: Z1QDHH18159H29 
       S3AliasTarget: s3-website.ca-central-1.amazonaws.com
 
 Resources:
-  booksS3Redirect:
-    Type: "AWS::S3::Bucket"
+  S3Redirect:
+    Type: AWS::S3::Bucket
     Properties: 
-      BucketName: !Sub books.${DomainName}
+      BucketName: !Ref AliasFrom
       AccessControl: PublicRead
       WebsiteConfiguration:
         RedirectAllRequestsTo:
-          HostName: alexanderbird.software/blog/reading-list.html
-          Protocol: https
-  booksS3BucketPolicy:
-    Type: "AWS::S3::BucketPolicy"
+          HostName: !Ref AliasToRoute
+          Protocol: !Ref AliasToProtocol
+  S3PublicBucketPolicy:
+    Type: AWS::S3::BucketPolicy
     Properties: 
-      Bucket: !Ref booksS3Redirect
+      Bucket: !Ref S3Redirect
       PolicyDocument: 
         Version: "2012-10-17"
         Statement:
@@ -36,15 +40,15 @@ Resources:
             Principal: "*"
             Action:
               - s3:GetObject
-            Resource: !Sub "arn:aws:s3:::books.${DomainName}/*"
-  booksRoute53:
+            Resource: !Sub "arn:aws:s3:::${AliasFrom}/*"
+  Route53Alias:
     Type: AWS::Route53::RecordSet
     Properties: 
       HostedZoneId: !Ref HostedZone
-      Name: !Sub books.${DomainName}
+      Name: !Ref AliasFrom
       Type: A
       AliasTarget:
         HostedZoneId:
-          Fn::FindInMap: [ RegionMap, ca-central-1, S3HostedZoneID ]
+          Fn::FindInMap: [ RegionMap, !Ref "Region", S3HostedZoneID ]
         DNSName:
-          Fn::FindInMap: [ RegionMap, ca-central-1, S3AliasTarget ]
+          Fn::FindInMap: [ RegionMap, !Ref "Region", S3AliasTarget ]
